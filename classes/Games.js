@@ -1,3 +1,4 @@
+'use strict'
 
 module.exports = class Games {
 
@@ -5,8 +6,24 @@ module.exports = class Games {
 		this.games = [];
 	}
 
-	newGame(game) {
-		this.games.push(game);
+	addGame(game) {
+
+		if (game instanceof Game) {
+			this.games.push(game);
+			return true;
+		}
+
+		return false;
+	}
+
+	alreadyExists(game) {
+		let exists = false
+		
+		this.games.forEach(element => {
+			
+		});
+
+		return exists;
 	}
 
 	findGameById(id) {

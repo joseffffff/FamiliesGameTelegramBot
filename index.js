@@ -60,15 +60,20 @@ bot.command('/startgame', async (ctx) => {
 
 		const numMembers = await ctx.getChatMembersCount(ctx.chat.id);
 
-		ctx.reply('Teniu 1 minut per registrar-vos al joc amb /register .');
-
 		let game = new Game({
 			group: ctx.chat,
 			id: ctx.chat.id,
 			maxMembers: numMembers,
 		});
 
-		games.newGame(game);
+		const result = games.addGame(game);
+
+		if (!result) {
+			ctx.reply('Hi ha hagut un problema al crear la partida.')
+			return;
+		}
+
+		ctx.reply('Teniu 1 minut per registrar-vos al joc amb /register .');
 
 		setTimeout(async () => {
 			await ctx.reply('Membres apuntats: ' + game.members.length);
