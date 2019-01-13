@@ -1,0 +1,24 @@
+{
+  "name": "telegramfamiliesgame",
+  "version": "1.0.0",
+  "description": "A Telegram Bot to play the family card game with your friends, in telegram groups.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joseffffff/FamiliesGameTelegramBot.git"
+  },
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Joseff",
+  "license": "ISC",
+  "dependencies": {
+    "telegraf": "^3.26.0"
+  },
+  "devDependencies": {
+    "debug": "^4.1.1",
+    "nodemon": "^1.18.9"
+  }
+}
