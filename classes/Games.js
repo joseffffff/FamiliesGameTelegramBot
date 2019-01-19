@@ -1,48 +1,44 @@
-'use strict'
+'use strict';
 
 const Game = require('./Game');
 
 module.exports = class Games {
+  constructor() {
+    this.games = [];
+  }
 
-	constructor() {
-		this.games = [];
-	}
+  addGame(game) {
+    if (game instanceof Game) {
+      this.games.push(game);
+      return true;
+    }
 
-	addGame(game) {
+    return false;
+  }
 
-		if (game instanceof Game) {
-			this.games.push(game);
-			return true;
-		}
+  alreadyExists(game) {
+    let exists = false;
 
-		return false;
-	}
+    this.games.forEach(element => {});
 
-	alreadyExists(game) {
-		let exists = false
-		
-		this.games.forEach(element => {
-			
-		});
+    return exists;
+  }
 
-		return exists;
-	}
+  findGameById(id) {
+    return this.games.find(game => game.id === id);
+  }
 
-	findGameById(id) {
-		return this.games.find(game => game.id === id);
-	}
+  delete(id) {
+    const game = this.findGameById(id);
 
-	delete(id) {
-		const game = this.findGameById(id);
+    if (!game) {
+      return;
+    }
 
-		if (!game) {
-			return;
-		}
+    const i = this.games.indexOf(game);
 
-		const i = this.games.indexOf(game);
-
-		if (i != -1) {
-			this.games.splice(i)
-		}
-	}
-}
+    if (i !== -1) {
+      this.games.splice(i);
+    }
+  }
+};

@@ -1,10 +1,7 @@
-const fs = require('fs');
+'use strict';
+
+// const fs = require('fs');
 
 module.exports = new class Logger {
-
-	constructor() {
-
-	}
-
-
-}
+  constructor() {}
+}();

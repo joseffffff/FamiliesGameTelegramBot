@@ -1,35 +1,35 @@
+'use strict';
+
 const User = require('./User');
 
 module.exports = class Users {
+  constructor() {
+    this.users = [];
+  }
 
-	constructor() {
-		this.users = [];
-	}
+  addUser(user) {
+    if (user instanceof User) {
+      if (this.findUserById(user.id) === null) {
+        this.users.push(user);
+        return true;
+      }
+    }
 
-	addUser(user) {
-		if (user instanceof User) {
+    return false;
+  }
 
-			if (this.findUserById(user.id) == null) {
-				this.users.push(user);
-				return true;
-			}
-		}
+  findUserById(id) {
+    return this.users.find(user => user.id === id);
+  }
 
-		return false;
-	}
+  // for debug
+  userNames() {
+    let names = '';
 
-	findUserById(id) {
-		return this.users.find(user => user.id == id);
-	}
+    this.users.forEach(user => {
+      names += ' - ' + user.firstname + '\n';
+    });
 
-	// for debug
-	userNames() {
-		let names = '';
-
-		this.users.forEach(user => {
-				names += ' - ' + user.firstname + '\n';
-		});
-
-		return names;
-	}
-}
+    return names;
+  }
+};

@@ -1,55 +1,54 @@
+'use strict';
+
 const Family = require('./Family');
 
 module.exports = class Game {
+  constructor(config) {
+    this.members = [];
+    this.group = config.group;
+    this.id = config.id;
+    this.maxMembers = config.maxMembers;
 
-	constructor(config) {
-		this.members = [];
-		this.group = config.group;
-		this.id = config.id;
-		this.maxMembers = config.maxMembers;
+    this.chat = config.ctx;
 
-		this.chat = config.ctx;
+    this.families = 15;
+    this.familyMembers = 5;
 
-		this.families = 15;
-		this.familyMembers = 5;
+    this.familiesCards = [];
+  }
 
-		this.familiesCards = [];
-	}
+  addMember(newPlayer) {
+    if (this.members.length >= this.maxMembers) {
+      throw new Error('Full list');
+    }
 
-	addMember(newPlayer) {
+    const members = this.members;
 
-		if (this.members.length >= this.maxMembers) {
-			throw 'Full list';
-		}
+    for (let i = 0; i < members.length; i++) {
+      const member = members[i];
+      if (member.id === newPlayer.id) {
+        return false;
+      }
+    }
 
-		const members = this.members;
+    this.members.push(newPlayer);
+    return true;
+  }
 
-		for (let i = 0; i < members.length; i++) {
-			const member = members[i];
-			if (member.id == newPlayer.id) {
-				return false;
-			}	
-		}
+  getMembersList() {
+    let members = '';
 
-		this.members.push(newPlayer)
-		return true;
-	}
+    this.members.forEach(member => {
+      console.log(member);
+      members += '- @' + member.username + ' (' + member.first_name + ')\n';
+    });
 
-	getMembersList() {
+    return members;
+  }
 
-		let members = '';
-
-		this.members.forEach(member => {
-			console.log(member)
-			members += '- @' + member.username + ' (' + member.first_name + ')\n';
-		});
-
-		return members;
-	}
-
-	generateCards() {
-		for (let i = 0; i < this.families; i++) {
-			this.familiesCards.push(new Family(this.familyMembers));
-		}
-	}
-}
+  generateCards() {
+    for (let i = 0; i < this.families; i++) {
+      this.familiesCards.push(new Family(this.familyMembers));
+    }
+  }
+};
