@@ -5,4 +5,8 @@ module.exports = {
 
 	MIN_MEMBERS_PER_FAMILY: 2,
 	MAX_MEMBERS_PER_FAMILY: 8,
+
+	familyMembers: {
+		
+	},
 }

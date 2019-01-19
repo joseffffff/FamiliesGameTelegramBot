@@ -21,20 +21,6 @@ bot.catch((err) => {
   console.log('Ooops', err)
 });
 
-bot.command('/test', (ctx) => {
-	console.log(ctx.from)
-	ctx.getChat(ctx.from.id)
-		.then(chat => {
-			console.log(chat)
-		})
-})
-
-bot.command('/aloha', (ctx) => {
-	console.log(ctx.from)
-	console.log(bot)
-	ctx.reply('Aloha @' + ctx.from.username)
-});
-
 bot.command('/start', async (ctx) => {
 	console.log(ctx.from)
 
@@ -43,14 +29,24 @@ bot.command('/start', async (ctx) => {
 		return;
 	}
 
-	const user = new User(ctx.from);
+	const user = new User(ctx);
 	const result = users.addUser(user);
 
 	if (result) {
-		ctx.reply('Has sigut registrar com a usuari del joc.');
+		ctx.reply('Has sigut registrat com a usuari del joc.');
 	} else {
 		ctx.reply('Hi ha hagut algun problema registrant-te com a usuari del joc.');
 	}
+});
+
+bot.command('/private', (ctx) => {
+	const user = users.findUserById(ctx.from.id)
+
+	if (!user) {
+		ctx.reply(`Aquest usuari no està registrat.`)
+	}
+
+	user.sendMsg('Holis');
 });
 
 bot.command('/startgame', async (ctx) => {
@@ -64,6 +60,7 @@ bot.command('/startgame', async (ctx) => {
 			group: ctx.chat,
 			id: ctx.chat.id,
 			maxMembers: numMembers,
+			ctx: ctx
 		});
 
 		const result = games.addGame(game);
@@ -94,13 +91,20 @@ bot.command('/register', async ctx => {
 	const game = games.findGameById(ctx.chat.id);
 
 	if (game == null) {
-		ctx.reply('No existeix cap joc on apuntar-te')
+		ctx.reply('No existeix cap joc iniciat en aquest grup')
 		return;
 	}
 
-	let newPlayer = ctx.from;
-
 	try {
+
+		const newPlayer = users.findUserById(ctx.from.id)
+
+		if (newPlayer == null) {
+			ctx.reply(ctx.from.first_name + ` no se t\'ha pogut afegir al joc, m\'has ` + 
+													`de dir /start PER PRIVAT, prèviament, per a que et conegui`);
+			return;
+		}
+
 		const success = game.addMember(newPlayer);
 	
 		if (success) {
@@ -118,3 +122,13 @@ bot.command('/register', async ctx => {
 bot.launch()
 
 console.log('Bot started')
+
+setInterval(() => {
+	var lines = process.stdout.getWindowSize()[1];
+	for(var i = 0; i < lines; i++) {
+			console.log('\r\n'); // clean console
+	}
+	console.log('------------------------------------------------------------');
+	console.log(users.userNames());
+	console.log('------------------------------------------------------------');
+}, 10000);

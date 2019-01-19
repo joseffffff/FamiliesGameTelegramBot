@@ -1,3 +1,4 @@
+const Family = require('./Family');
 
 module.exports = class Game {
 
@@ -7,10 +8,12 @@ module.exports = class Game {
 		this.id = config.id;
 		this.maxMembers = config.maxMembers;
 
+		this.chat = config.ctx;
+
 		this.families = 15;
 		this.familyMembers = 5;
 
-		this.cards = [];
+		this.familiesCards = [];
 	}
 
 	addMember(newPlayer) {
@@ -45,6 +48,8 @@ module.exports = class Game {
 	}
 
 	generateCards() {
-		
+		for (let i = 0; i < this.families; i++) {
+			this.familiesCards.push(new Family(this.familyMembers));
+		}
 	}
 }

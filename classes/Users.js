@@ -1,3 +1,4 @@
+const User = require('./User');
 
 module.exports = class Users {
 
@@ -7,25 +8,28 @@ module.exports = class Users {
 
 	addUser(user) {
 		if (user instanceof User) {
-			this.users.push(user);
-			return true;
+
+			if (this.findUserById(user.id) == null) {
+				this.users.push(user);
+				return true;
+			}
 		}
 
 		return false;
 	}
 
 	findUserById(id) {
+		return this.users.find(user => user.id == id);
+	}
 
-		const users = this.user.map((user) => {
-			if (user.id == id) {
-				return user;
-			}
+	// for debug
+	userNames() {
+		let names = '';
+
+		this.users.forEach(user => {
+				names += ' - ' + user.firstname + '\n';
 		});
 
-		if (users.length == 0) {
-			return null;
-		}
-
-		return users[0];
+		return names;
 	}
 }

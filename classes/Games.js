@@ -1,5 +1,7 @@
 'use strict'
 
+const Game = require('./Game');
+
 module.exports = class Games {
 
 	constructor() {
@@ -27,24 +29,13 @@ module.exports = class Games {
 	}
 
 	findGameById(id) {
-
-		const games = this.games.map((game) => {
-			if (game.id == id) {
-				return game;
-			}
-		});
-
-		if (games.length == 0) {
-			return null;
-		}
-
-		return games[0];
+		return this.games.find(game => game.id === id);
 	}
 
 	delete(id) {
 		const game = this.findGameById(id);
 
-		if (game == null) {
+		if (!game) {
 			return;
 		}
 
