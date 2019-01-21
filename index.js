@@ -75,12 +75,17 @@ bot.command('/startgame', async ctx => {
 
     setTimeout(async() => {
       await ctx.reply('Membres apuntats: ' + game.members.length);
-      await ctx.reply(game.getMembersList());
-      await ctx.reply('Anem a generar les cartes del joc...');
-      await ctx.reply('Es generaran ' + game.families + ' families amb '
-                             + game.familyMembers + ' membres per familia.');
-      game.generateCards();
-      games.delete(game.id);
+
+      try {
+        await ctx.reply(game.getMembersList());
+        await ctx.reply('Anem a generar les cartes del joc...');
+        await ctx.reply('Es generaran ' + game.families + ' families amb '
+                               + game.familyMembers + ' membres per familia.');
+        game.generateCards();
+      } catch (e) {
+        await ctx.reply(e.message);
+        games.delete(game.id);
+      }
     }, 5000); // put 60000 for 1 min
 
   } else {
@@ -93,18 +98,16 @@ bot.command('/register', async ctx => {
   const game = games.findGameById(ctx.chat.id);
 
   if (!game) {
-    ctx.reply('No existeix cap joc iniciat en aquest grup');
-    return;
+    return ctx.reply('No existeix cap joc iniciat en aquest grup');
   }
 
   try {
 
     const newPlayer = users.findUserById(ctx.from.id);
 
-    if (newPlayer == null) {
-      ctx.reply(ctx.from.first_name + ` no se t\'ha pogut afegir al joc, m\'has 
-                      de dir /start PER PRIVAT, prèviament, per a que et conegui`);
-      return;
+    if (!newPlayer) {
+      return ctx.reply(ctx.from.first_name + ` no se t\'ha pogut afegir al joc, m\'has ` +
+                      `de dir /start prèviament PER PRIVAT per a que et conegui`);
     }
 
     const success = game.addMember(newPlayer);

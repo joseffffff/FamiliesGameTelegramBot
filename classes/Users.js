@@ -9,7 +9,7 @@ module.exports = class Users {
 
   addUser(user) {
     if (user instanceof User) {
-      if (this.findUserById(user.id) === null) {
+      if (!this.findUserById(user.id)) {
         this.users.push(user);
         return true;
       }

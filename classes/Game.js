@@ -3,11 +3,13 @@
 const Family = require('./Family');
 
 module.exports = class Game {
+
   constructor(config) {
     this.members = [];
     this.group = config.group;
     this.id = config.id;
     this.maxMembers = config.maxMembers;
+    this.minMembers = 2; // ???
 
     this.chat = config.ctx;
 
@@ -43,10 +45,20 @@ module.exports = class Game {
       members += '- @' + member.username + ' (' + member.first_name + ')\n';
     });
 
+    if (members === '') {
+      throw new Error('No s\'ha apuntat ningú');
+    }
+
     return members;
   }
 
   generateCards() {
+
+    if (this.members.length < this.minMembers) {
+      throw new Error('No s\'han apuntat les suficients persones per jugar al joc, mínim '
+                   + this.minMembers + ' jugadors.')
+    }
+
     for (let i = 0; i < this.families; i++) {
       this.familiesCards.push(new Family(this.familyMembers));
     }
