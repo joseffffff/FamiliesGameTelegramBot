@@ -3,6 +3,7 @@
 const Game = require('./Game');
 
 module.exports = class Games {
+  
   constructor() {
     this.games = [];
   }

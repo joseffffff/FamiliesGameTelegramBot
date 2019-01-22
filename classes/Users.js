@@ -3,6 +3,7 @@
 const User = require('./User');
 
 module.exports = class Users {
+  
   constructor() {
     this.users = [];
   }

@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = class User {
+  
   constructor(ctx) {
     this.ctx = ctx;
     const from = ctx.from;

@@ -82,6 +82,9 @@ bot.command('/startgame', async ctx => {
         await ctx.reply('Es generaran ' + game.families + ' families amb '
                                + game.familyMembers + ' membres per familia.');
         game.generateCards();
+        await ctx.reply('Cartes generades, comencem el joc. ');
+        //game.printCards();
+        game.startGame();
       } catch (e) {
         await ctx.reply(e.message);
         games.delete(game.id);
@@ -121,7 +124,6 @@ bot.command('/register', async ctx => {
     console.error(e);
     ctx.reply('Ja no poden apuntar-se més jugadors.');
   }
-
 });
 
 bot.launch();

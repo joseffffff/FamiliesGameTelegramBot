@@ -9,12 +9,14 @@ module.exports = class Game {
     this.group = config.group;
     this.id = config.id;
     this.maxMembers = config.maxMembers;
-    this.minMembers = 2; // ???
+    this.minMembers = 1; // ???
 
     this.chat = config.ctx;
 
-    this.families = 15;
+    this.families = 10;
     this.familyMembers = 5;
+
+    this.initialCardsPerMember = 4;
 
     this.familiesCards = [];
   }
@@ -54,6 +56,7 @@ module.exports = class Game {
 
   generateCards() {
 
+
     if (this.members.length < this.minMembers) {
       throw new Error('No s\'han apuntat les suficients persones per jugar al joc, mínim '
                    + this.minMembers + ' jugadors.')
@@ -62,5 +65,37 @@ module.exports = class Game {
     for (let i = 0; i < this.families; i++) {
       this.familiesCards.push(new Family(this.familyMembers));
     }
+  }
+
+  printCards() {
+    this.familiesCards.map( el => {
+      this.chat.reply(el.printCards());
+    });
+  }
+
+  startGame() {
+    this.dealCards();
+  }
+
+  dealCards() {
+    //const numberOfCardsToDeal = this.members.length * this.initialCardsPerMember;
+
+    for (let i = 0; i < this.members.length; i++) {
+      
+      const member = this.members[i];
+      
+      for (let j = 0; j < 4; j++) {
+        this.assignCardToMember(member);
+      }
+    }
+  }
+
+  assignCardToMember(member) {
+
+    const randomFamilyNumber = Math.floor(Math.random() * (this.familiesCards.length)) + 0;
+
+    const randomFamily = this.familiesCards[randomFamilyNumber];
+
+    const randomCard = randomFamily.getRandomCard();
   }
 };
